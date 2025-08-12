@@ -1,49 +1,115 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <title>Tính tiền bán hàng</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        input {
-            margin: 5px;
-            padding: 5px;
-        }
-        table {
-            border-collapse: collapse;
-            width: 100%;
-            margin-top: 15px;
-        }
-        th, td {
-            border: 1px solid #ccc;
-            padding: 8px;
-            text-align: center;
-        }
-        th {
-            background: #f0f0f0;
-        }
-        .total {
-            font-weight: bold;
-            font-size: 18px;
-            text-align: right;
-            margin-top: 10px;
-        }
-        button {
-            padding: 8px 12px;
-            margin-top: 5px;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Tính tiền bán hàng</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        background: #f5f7fa;
+    }
+    header {
+        background: #4CAF50;
+        color: white;
+        text-align: center;
+        padding: 15px 0;
+        font-size: 22px;
+        font-weight: bold;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+    .container {
+        max-width: 800px;
+        margin: auto;
+        padding: 20px;
+    }
+    .input-group {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-bottom: 15px;
+        background: white;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    .input-group label {
+        flex: 1 1 150px;
+        display: flex;
+        flex-direction: column;
+        font-weight: bold;
+    }
+    .input-group input {
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+        margin-top: 5px;
+    }
+    button {
+        background: #4CAF50;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 15px;
+        transition: 0.2s;
+    }
+    button:hover {
+        background: #45a049;
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        background: white;
+        margin-top: 20px;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+    th, td {
+        padding: 10px;
+        text-align: center;
+        border-bottom: 1px solid #eee;
+    }
+    th {
+        background: #f0f0f0;
+    }
+    .total {
+        font-size: 18px;
+        font-weight: bold;
+        text-align: right;
+        margin-top: 15px;
+        background: white;
+        padding: 10px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+</style>
 </head>
 <body>
 
-    <h2>Tính tiền bán hàng</h2>
-    <label>Tên sản phẩm: <input type="text" id="ten"></label>
-    <label>Giá/kg (VND): <input type="number" id="gia"></label>
-    <label>Số kg: <input type="number" step="0.01" id="kg"></label>
-    <button onclick="themSanPham()">Thêm sản phẩm</button>
+<header>💰 TÍNH TIỀN BÁN HÀNG</header>
+
+<div class="container">
+    <div class="input-group">
+        <label>
+            Tên sản phẩm
+            <input type="text" id="ten" placeholder="Nhập tên sản phẩm...">
+        </label>
+        <label>
+            Giá/kg (VND)
+            <input type="number" id="gia" placeholder="Ví dụ: 30000">
+        </label>
+        <label>
+            Số kg
+            <input type="number" step="0.01" id="kg" placeholder="Ví dụ: 2.5">
+        </label>
+        <div style="display: flex; align-items: flex-end;">
+            <button onclick="themSanPham()">➕ Thêm</button>
+        </div>
+    </div>
 
     <table id="hoaDon">
         <tr>
@@ -55,37 +121,37 @@
     </table>
 
     <div class="total" id="tongTien">Tổng cộng: 0 VND</div>
+</div>
 
-    <script>
-        let tongTien = 0;
-        function themSanPham() {
-            const ten = document.getElementById("ten").value;
-            const gia = parseFloat(document.getElementById("gia").value);
-            const kg = parseFloat(document.getElementById("kg").value);
+<script>
+    let tongTien = 0;
+    function themSanPham() {
+        const ten = document.getElementById("ten").value.trim();
+        const gia = parseFloat(document.getElementById("gia").value);
+        const kg = parseFloat(document.getElementById("kg").value);
 
-            if (!ten || isNaN(gia) || isNaN(kg)) {
-                alert("Vui lòng nhập đầy đủ thông tin!");
-                return;
-            }
-
-            const thanhTien = gia * kg;
-            tongTien += thanhTien;
-
-            const table = document.getElementById("hoaDon");
-            const row = table.insertRow(-1);
-            row.insertCell(0).innerText = ten;
-            row.insertCell(1).innerText = gia.toLocaleString();
-            row.insertCell(2).innerText = kg;
-            row.insertCell(3).innerText = thanhTien.toLocaleString();
-
-            document.getElementById("tongTien").innerText = "Tổng cộng: " + tongTien.toLocaleString() + " VND";
-
-            // Reset input
-            document.getElementById("ten").value = "";
-            document.getElementById("gia").value = "";
-            document.getElementById("kg").value = "";
+        if (!ten || isNaN(gia) || isNaN(kg)) {
+            alert("Vui lòng nhập đầy đủ thông tin!");
+            return;
         }
-    </script>
+
+        const thanhTien = gia * kg;
+        tongTien += thanhTien;
+
+        const table = document.getElementById("hoaDon");
+        const row = table.insertRow(-1);
+        row.insertCell(0).innerText = ten;
+        row.insertCell(1).innerText = gia.toLocaleString();
+        row.insertCell(2).innerText = kg;
+        row.insertCell(3).innerText = thanhTien.toLocaleString();
+
+        document.getElementById("tongTien").innerText = "Tổng cộng: " + tongTien.toLocaleString() + " VND";
+
+        document.getElementById("ten").value = "";
+        document.getElementById("gia").value = "";
+        document.getElementById("kg").value = "";
+    }
+</script>
 
 </body>
 </html>
