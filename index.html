@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <title>Tính tiền bán hàng</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input {
+            margin: 5px;
+            padding: 5px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 15px;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background: #f0f0f0;
+        }
+        .total {
+            font-weight: bold;
+            font-size: 18px;
+            text-align: right;
+            margin-top: 10px;
+        }
+        button {
+            padding: 8px 12px;
+            margin-top: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Tính tiền bán hàng</h2>
+    <label>Tên sản phẩm: <input type="text" id="ten"></label>
+    <label>Giá/kg (VND): <input type="number" id="gia"></label>
+    <label>Số kg: <input type="number" step="0.01" id="kg"></label>
+    <button onclick="themSanPham()">Thêm sản phẩm</button>
+
+    <table id="hoaDon">
+        <tr>
+            <th>Sản phẩm</th>
+            <th>Giá/kg (VND)</th>
+            <th>Số kg</th>
+            <th>Thành tiền (VND)</th>
+        </tr>
+    </table>
+
+    <div class="total" id="tongTien">Tổng cộng: 0 VND</div>
+
+    <script>
+        let tongTien = 0;
+        function themSanPham() {
+            const ten = document.getElementById("ten").value;
+            const gia = parseFloat(document.getElementById("gia").value);
+            const kg = parseFloat(document.getElementById("kg").value);
+
+            if (!ten || isNaN(gia) || isNaN(kg)) {
+                alert("Vui lòng nhập đầy đủ thông tin!");
+                return;
+            }
+
+            const thanhTien = gia * kg;
+            tongTien += thanhTien;
+
+            const table = document.getElementById("hoaDon");
+            const row = table.insertRow(-1);
+            row.insertCell(0).innerText = ten;
+            row.insertCell(1).innerText = gia.toLocaleString();
+            row.insertCell(2).innerText = kg;
+            row.insertCell(3).innerText = thanhTien.toLocaleString();
+
+            document.getElementById("tongTien").innerText = "Tổng cộng: " + tongTien.toLocaleString() + " VND";
+
+            // Reset input
+            document.getElementById("ten").value = "";
+            document.getElementById("gia").value = "";
+            document.getElementById("kg").value = "";
+        }
+    </script>
+
+</body>
+</html>
